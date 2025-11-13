@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FormularioTaller.css'; // Importamos el CSS
 
 // Estado inicial del formulario
 const initialState = {
   nombre: '',
   correo: '',
-  tipoPase: '', // 'Estudiante' o 'Profesional'
+  tipoPase: '', // 'estudiante' o 'profesional'
   aceptoTerminos: false,
   comentarios: ''
 };
@@ -20,7 +20,15 @@ function FormularioTaller() {
   // 3. ESTADO: Para controlar la visibilidad del modal
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 4. MANEJADOR DE CAMBIOS (Controlado)
+  // 4. ESTADO: Para saber si el formulario es válido
+  const [isFormValid, setIsFormValid] = useState(false);
+
+  // 5. EFECTO: Valida el formulario cada vez que 'formData' cambia
+  useEffect(() => {
+    setIsFormValid(validateForm(true));
+  }, [formData]);
+
+  // 6. MANEJADOR DE CAMBIOS (Controlado)
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const inputValue = type === 'checkbox' ? checked : value;
@@ -30,7 +38,7 @@ function FormularioTaller() {
       [name]: inputValue
     });
 
-    // Limpia el error del campo específico si el usuario empieza a corregirlo
+    // Limpia el error del campo que se está editando
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -39,8 +47,8 @@ function FormularioTaller() {
     }
   };
 
-  // 5. LÓGICA DE VALIDACIÓN (Función pura)
-  const validateForm = () => {
+  // 7. LÓGICA DE VALIDACIÓN
+  const validateForm = (checkOnly = false) => {
     const newErrors = {};
     
     if (!formData.nombre.trim()) {
@@ -58,37 +66,28 @@ function FormularioTaller() {
       newErrors.aceptoTerminos = 'Debe aceptar los términos y condiciones.';
     }
 
-    setErrors(newErrors);
+    if (!checkOnly) {
+      setErrors(newErrors);
+    }
     return Object.keys(newErrors).length === 0;
   };
 
-  // 6. MANEJADOR DE ENVÍO
+  // 8. MANEJADOR DE ENVÍO
   const handleSubmit = (e) => {
     e.preventDefault(); 
-    // Valida una última vez al intentar enviar
     if (!validateForm()) {
-      return;
+      return; 
     }
     console.log('Formulario válido, enviando (simulado):', formData);
     setIsModalOpen(true); 
   };
 
-  // 7. Función para cerrar el modal y resetear el formulario
+  // 9. Función para cerrar el modal y resetear el formulario
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setFormData(initialState); 
     setErrors({}); 
   };
-
-  // 8. MEJORA: Lógica para deshabilitar el botón
-  // Usamos useMemo para que no se recalcule en cada render, solo si formData cambia
-  const isFormInvalid = useMemo(() => {
-    return !formData.nombre.trim() || 
-           !formData.correo.includes('@') || 
-           !formData.tipoPase || 
-           !formData.aceptoTerminos;
-  }, [formData]);
-
 
   return (
     <div className="pase-container">
@@ -125,7 +124,7 @@ function FormularioTaller() {
           {errors.correo && <span className="error-text">{errors.correo}</span>}
         </div>
 
-        {/* Campo Tipo de Pase (Radio) - REINTERPRETADO */}
+        {/* Campo Tipo de Pase (Radio) */}
         <div className="form-group">
           <label>Tipo de Asistencia</label>
           <div className="radio-group">
@@ -182,25 +181,25 @@ function FormularioTaller() {
           {errors.aceptoTerminos && <span className="error-text">{errors.aceptoTerminos}</span>}
         </div>
 
-        {/* Botón de Envío - MEJORA: Deshabilitado si es inválido */}
-        <button type="submit" className="submit-btn" disabled={isFormInvalid}>
-          {isFormInvalid ? 'Completa los campos requeridos' : 'Registrarme al Taller'}
+        {/* Botón de Envío (con validación proactiva) */}
+        <button type="submit" className="submit-btn" disabled={!isFormValid}>
+          Registrarme en el Taller
         </button>
       </form>
 
       {/* --- SECCIÓN DERECHA (IMAGEN Y RESUMEN) --- */}
       <div className="summary-card">
         
-        {/* 1. La imagen - MEJORA: Placeholder */}
+        {/* 1. La imagen que subiste a 'public' */}
         <div className="image-container">
           <img 
-            src="https://placehold.co/600x300/3a3a3a/61dafb?text=Microtaller+UI/UX"
-            alt="Placeholder del taller de UI/UX" 
+            src="/microtaller.webp" // Ruta pública
+            alt="Imagen del microtaller" 
             className="summary-image" 
           />
         </div>
 
-        {/* 2. El Resumen en Vivo (requerido por el examen) */}
+        {/* 2. El Resumen en Vivo */}
         <div className="summary-content">
           <h3>Resumen en Vivo</h3>
           <p>
@@ -210,12 +209,21 @@ function FormularioTaller() {
             <strong>Correo:</strong> {formData.correo || '...'}
           </p>
           <p>
-            {/* REINTERPRETADO */}
             <strong>Asistencia:</strong> {formData.tipoPase || '...'}
           </p>
           <p>
             <strong>Términos:</strong> {formData.aceptoTerminos ? 'Aceptados' : 'Pendientes'}
           </p>
+        </div>
+
+        {/* --- 3. MEJORA: Elemento decorativo del camión --- */}
+        {/* Asegúrate de tener una imagen 'truck-icon.webp' (o como la llames) en tu carpeta /public */}
+        <div className="summary-decoration">
+          <img 
+            src="/truck-icon.webp" 
+            alt="Decoración de taller" 
+            className="truck-icon" 
+          />
         </div>
       </div>
 
@@ -224,8 +232,8 @@ function FormularioTaller() {
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <h3>Envío exitoso (simulado — sin back-end)</h3>
-            <p>¡Tu registro al taller ha sido confirmado!</p>
+            <h3>¡Registro exitoso! (Simulado)</h3>
+            <p>Tu lugar para el microtaller ha sido reservado.</p>
             
             <div className="modal-summary">
               <p><strong>Nombre:</strong> {formData.nombre}</p>

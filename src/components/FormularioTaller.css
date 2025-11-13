@@ -1,192 +1,266 @@
-/* Estilos globales para el cuerpo (fondo oscuro) */
+/* Paleta de colores actualizada a tonos azules y oscuros */
+:root {
+  --color-primario: #3498DB;      /* Azul principal */
+  --color-primario-hover: #2980B9; /* Azul más oscuro para hover */
+  --color-primario-claro: #5DADE2; /* Azul claro para acentos */
+  --color-sombra-focus: rgba(52, 152, 219, 0.6); /* Sombra de focus azul */
+  --color-error: #ff6b6b;          /* Rojo para errores */
+
+  --color-fondo-body: #1a1a1a;     /* Fondo oscuro principal */
+  --color-fondo-tarjeta: #2a2a2a;  /* Fondo de las tarjetas */
+  --color-fondo-input: #333;      /* Fondo de inputs y resumen */
+  
+  --color-texto-principal: #e0e0e0;
+  --color-texto-secundario: #c0c0c0;
+  --color-texto-deshabilitado: #999;
+  --color-borde: #444;
+}
+
 body {
   margin: 0;
-  background-color: #2c2c2c; /* Gris oscuro general */
-  color: #e0e0e0; /* Color de texto claro por defecto */
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--color-fondo-body);
+  color: var(--color-texto-principal);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Alinea al inicio (arriba) */
+  min-height: 100vh;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-/* Título de la aplicación (en App.jsx) */
-.App-header h1 {
-  text-align: center;
-  color: #61dafb; /* Azul claro para el título */
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  font-size: 2.5rem;
-}
-
-/* Layout principal (flexbox para dos columnas en desktop) */
 .pase-container {
   display: flex;
-  flex-wrap: wrap; /* En pantallas chicas, el resumen pasa abajo */
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1000px;
-  margin: 0 auto;
-  align-items: flex-start; /* Alinea las tarjetas arriba */
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+  max-width: 1200px;
+  width: 100%;
+  margin-top: 20px;
 }
 
-/* Tarjeta del formulario */
 .form-card {
-  flex: 1; 
+  background-color: var(--color-fondo-tarjeta);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  flex: 1; /* Permite que las tarjetas crezcan */
   min-width: 300px;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  background: #3a3a3a; 
-  color: #e0e0e0;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Tarjeta de la derecha (Imagen + Resumen) */
-.summary-card {
-  flex: 1;
-  min-width: 300px;
-  background: #333333;
-  border: 1px solid #555555;
-  border-radius: 8px; /* Redondeado para la tarjeta */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  padding: 0; /* Quitamos el padding para que la imagen toque los bordes */
-  overflow: hidden; /* Muy importante para que la imagen respete el borde redondeado */
-  color: #e0e0e0;
+.form-card h2 {
+  color: var(--color-primario); /* AZUL */
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.8em;
+  font-weight: 600;
 }
 
-/* --- Estilos para la imagen --- */
-.image-container {
-  width: 100%;
-  max-height: 250px; /* Puedes ajustar esta altura */
-  overflow: hidden;
-  background-color: #3a3a3a; /* Fondo mientras carga la imagen */
-}
-
-.summary-image { /* Renombrado de .bar-image */
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* Recorta la imagen para que llene el contenedor sin distorsionarse */
-  display: block; /* Elimina espacio extra debajo de la imagen */
-}
-
-/* --- Estilos para el contenido del resumen --- */
-.summary-content {
-  padding: 1.5rem; /* Añadimos el padding aquí, al texto, en lugar de la tarjeta */
-}
-
-.summary-content h3 {
-  margin-top: 0;
-  border-bottom: 2px solid #61dafb; /* Línea divisoria azul */
-  padding-bottom: 8px;
-  color: #61dafb; /* Título del resumen en azul */
-}
-
-.summary-content p {
-  font-size: 1rem;
-  line-height: 1.6;
-  color: #e0e0e0; /* Asegura que el texto del resumen sea visible */
-  word-wrap: break-word; /* Evita que textos largos se desborden */
-}
-
-/* Estilos del formulario */
 .form-group {
-  margin-bottom: 1.25rem;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #e0e0e0; 
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--color-texto-secundario);
 }
 
-.form-group input[type='text'],
-.form-group input[type='email'],
+.form-group input[type="text"],
+.form-group input[type="email"],
 .form-group textarea {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #555555; 
-  border-radius: 4px;
-  box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
-  background-color: #4a4a4a; 
-  color: #e0e0e0; 
-  transition: border-color 0.2s, box-shadow 0.2s;
+  width: calc(100% - 20px);
+  padding: 12px 10px;
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  background-color: var(--color-fondo-input);
+  color: var(--color-texto-principal);
+  font-size: 1em;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.form-group input:focus,
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
 .form-group textarea:focus {
+  border-color: var(--color-primario); /* AZUL */
+  box-shadow: 0 0 8px var(--color-sombra-focus); /* AZUL */
   outline: none;
-  border-color: #61dafb;
-  box-shadow: 0 0 0 2px rgba(97, 218, 251, 0.3);
-}
-
-
-.form-group input::placeholder,
-.form-group textarea::placeholder {
-  color: #aaaaaa; 
 }
 
 .form-group textarea {
-  min-height: 80px;
   resize: vertical;
+  min-height: 80px;
 }
 
 .form-group small {
   display: block;
+  margin-top: 5px;
   text-align: right;
-  font-size: 0.8rem;
-  color: #aaaaaa;
+  color: var(--color-texto-deshabilitado);
+  font-size: 0.85em;
 }
 
-.radio-group label,
+.radio-group label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+  accent-color: var(--color-primario); /* AZUL */
+}
+
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-weight: 400;
-  margin-bottom: 0.5rem;
-  color: #e0e0e0; 
   cursor: pointer;
+  color: var(--color-texto-secundario);
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+  accent-color: var(--color-primario); /* AZUL */
+}
+
+.error-text {
+  color: var(--color-error);
+  font-size: 0.9em;
+  margin-top: 5px;
+  display: block;
 }
 
 .submit-btn {
-  width: 100%;
-  padding: 0.8rem 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff; 
-  background-color: #007bff; 
+  background-color: var(--color-primario); /* AZUL */
+  color: white;
+  padding: 15px 25px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s, opacity 0.2s;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 20px;
+  align-self: center;
+  width: fit-content;
 }
 
-.submit-btn:hover {
-  background-color: #0056b3; 
+.submit-btn:hover:not(:disabled) {
+  background-color: var(--color-primario-hover); /* AZUL OSCURO */
+  transform: translateY(-2px);
 }
 
-/* MEJORA: Estilo para el botón deshabilitado */
 .submit-btn:disabled {
-  background-color: #555;
-  color: #999;
+  background-color: #666;
   cursor: not-allowed;
   opacity: 0.7;
 }
 
+/* --- ESTILOS DE RESUMEN CORREGIDOS Y MEJORADOS --- */
+.summary-card {
+  background-color: var(--color-fondo-tarjeta);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  flex: 1; 
+  min-width: 300px;
+  max-width: 500px;
+  
+  /* Flexbox para alinear contenido interno */
+  display: flex;
+  flex-direction: column;
+  
+  /* ESTE ES EL CAMBIO CLAVE:
+     Alinea los elementos (imagen, resumen, camión) al inicio (arriba).
+  */
+  justify-content: flex-start; 
+  align-items: center; /* Centra los elementos horizontalmente */
+}
 
-.error-text {
-  color: #ff6b6b; /* Rojo más visible en fondo oscuro */
-  font-size: 0.85rem;
-  margin-top: 0.25rem;
+.image-container {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 25px; /* Espacio entre la imagen y el resumen */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.summary-image {
+  width: 100%;
+  height: auto;
   display: block;
 }
 
-/* --- Estilos del Modal --- */
+.summary-content {
+  width: 100%;
+  text-align: left;
+  background-color: var(--color-fondo-input);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.summary-content h3 {
+  color: var(--color-primario-claro); /* AZUL CLARO */
+  margin-top: 0;
+  margin-bottom: 15px;
+  border-bottom: 2px solid var(--color-primario); /* AZUL */
+  padding-bottom: 10px;
+  font-size: 1.5em;
+  text-align: left;
+}
+
+.summary-content p {
+  margin-bottom: 10px;
+  line-height: 1.6;
+  color: var(--color-texto-secundario);
+}
+
+.summary-content strong {
+  color: var(--color-texto-principal);
+}
+
+/* --- NUEVOS ESTILOS PARA LA DECORACIÓN DEL CAMIÓN --- */
+.summary-decoration {
+  width: 100%; /* Ocupa todo el ancho de la tarjeta */
+  text-align: center; /* Centra el ícono */
+  
+  /* ESTA ES LA CLAVE: 
+     Empuja este elemento hacia abajo, ocupando el espacio sobrante.
+  */
+  margin-top: auto; 
+  
+  padding-top: 25px; /* Espacio superior para separarlo del resumen */
+  padding-bottom: 10px; /* Un poco de espacio inferior */
+}
+
+.truck-icon {
+  max-width: 300px; /* Tamaño del ícono, ajústalo a tu gusto */
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  
+  /* Filtro para que la imagen (aunque sea de color) combine con el tema */
+  filter: grayscale(1) opacity(0.6) brightness(1.2);
+}
+
+
+/* --- ESTILOS MODAL (AZUL) --- */
 .modal-overlay {
-  position: fixed; 
+  position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.8); 
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -194,47 +268,99 @@ body {
 }
 
 .modal-content {
-  background: #3a3a3a; 
-  color: #e0e0e0; 
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); 
+  background-color: var(--color-fondo-tarjeta);
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+  text-align: center;
   max-width: 500px;
   width: 90%;
-  text-align: center;
+  color: var(--color-texto-principal);
 }
 
 .modal-content h3 {
-  color: #61dafb; 
+  color: var(--color-primario); /* AZUL */
+  margin-bottom: 20px;
+  font-size: 2em;
+}
+
+.modal-content p {
+  margin-bottom: 15px;
+  font-size: 1.1em;
 }
 
 .modal-summary {
+  background-color: var(--color-fondo-input);
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 25px;
   text-align: left;
-  background: #4a4a4a; 
-  border-radius: 4px;
-  padding: 1rem;
-  margin: 1.5rem 0;
-  color: #e0e0e0; 
-  word-wrap: break-word;
+  border: 1px dashed var(--color-primario); /* AZUL */
 }
 
 .modal-summary p {
-  color: #e0e0e0; 
-  margin: 0.5rem 0;
+  margin: 8px 0;
+  font-size: 1em;
 }
 
 .modal-close-btn {
-  padding: 0.6rem 1.2rem;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #2c2c2c; /* Texto oscuro para mejor contraste */
-  background-color: #61dafb; 
+  background-color: var(--color-primario); /* AZUL */
+  color: white;
+  padding: 12px 25px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
+  font-size: 1.1em;
   cursor: pointer;
-  transition: background-color 0.2s;
+  margin-top: 30px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .modal-close-btn:hover {
-  background-color: #4ac6ed; 
+  background-color: var(--color-primario-hover); /* AZUL OSCURO */
+  transform: translateY(-1px);
+}
+
+/* --- Media Queries (Sin cambios) --- */
+@media (max-width: 768px) {
+  .pase-container {
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+  }
+
+  .form-card,
+  .summary-card {
+    max-width: 95%;
+    padding: 25px;
+  }
+
+  .form-card h2,
+  .summary-content h3 {
+    font-size: 1.5em;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+
+  .form-card,
+  .summary-card {
+    padding: 20px;
+  }
+
+  .form-card h2,
+  .summary-content h3 {
+    font-size: 1.3em;
+  }
+  
+  .summary-content {
+      padding: 15px;
+  }
 }
