@@ -1,0 +1,220 @@
+/* src/components/PaseInvitado.css */
+
+/* Estilos globales para el cuerpo (fondo oscuro) */
+body {
+  margin: 0;
+  background-color: #2c2c2c; /* Gris oscuro general */
+  color: #e0e0e0; /* Color de texto claro por defecto */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+/* Título de la aplicación (en App.jsx) */
+.App-header h1 {
+  text-align: center;
+  color: #61dafb; /* Azul claro para el título */
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+}
+
+/* Layout principal (flexbox para dos columnas en desktop) */
+.pase-container {
+  display: flex;
+  flex-wrap: wrap; /* En pantallas chicas, el resumen pasa abajo */
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: flex-start; /* Alinea las tarjetas arriba */
+}
+
+/* Tarjeta del formulario */
+.form-card {
+  flex: 1; 
+  min-width: 300px;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: #3a3a3a; 
+  color: #e0e0e0;
+}
+
+/* Tarjeta de la derecha (Imagen + Resumen) */
+.summary-card {
+  flex: 1;
+  min-width: 300px;
+  background: #333333;
+  border: 1px solid #555555;
+  border-radius: 8px; /* Redondeado para la tarjeta */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 0; /* Quitamos el padding para que la imagen toque los bordes */
+  overflow: hidden; /* Muy importante para que la imagen respete el borde redondeado */
+  color: #e0e0e0;
+}
+
+/* --- Nuevos estilos para la imagen --- */
+.image-container {
+  width: 100%;
+  max-height: 250px; /* Puedes ajustar esta altura */
+  overflow: hidden;
+  /* No necesita border-radius aquí si .summary-card tiene overflow:hidden */
+}
+
+.bar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Recorta la imagen para que llene el contenedor sin distorsionarse */
+  display: block; /* Elimina espacio extra debajo de la imagen */
+}
+
+/* --- Nuevos estilos para el contenido del resumen --- */
+.summary-content {
+  padding: 1.5rem; /* Añadimos el padding aquí, al texto, en lugar de la tarjeta */
+}
+
+.summary-content h3 {
+  margin-top: 0;
+  border-bottom: 2px solid #61dafb; /* Línea divisoria azul */
+  padding-bottom: 8px;
+  color: #61dafb; /* Título del resumen en azul */
+}
+
+.summary-content p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #e0e0e0; /* Asegura que el texto del resumen sea visible */
+}
+
+/* Estilos del formulario (sin cambios) */
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0; 
+}
+
+.form-group input[type='text'],
+.form-group input[type='email'],
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #555555; 
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: #4a4a4a; 
+  color: #e0e0e0; 
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #aaaaaa; 
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.form-group small {
+  display: block;
+  text-align: right;
+  font-size: 0.8rem;
+  color: #aaaaaa;
+}
+
+.radio-group label,
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+  color: #e0e0e0; 
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff; 
+  background-color: #007bff; 
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3; 
+}
+
+.error-text {
+  color: #ff6b6b; /* Rojo más visible en fondo oscuro */
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* --- Estilos del Modal (sin cambios) --- */
+.modal-overlay {
+  position: fixed; 
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #3a3a3a; 
+  color: #e0e0e0; 
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); 
+  max-width: 500px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-content h3 {
+  color: #61dafb; 
+}
+
+.modal-summary {
+  text-align: left;
+  background: #4a4a4a; 
+  border-radius: 4px;
+  padding: 1rem;
+  margin: 1.5rem 0;
+  color: #e0e0e0; 
+}
+
+.modal-summary p {
+  color: #e0e0e0; 
+}
+
+.modal-close-btn {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #61dafb; 
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.modal-close-btn:hover {
+  background-color: #4ac6ed; 
+}
