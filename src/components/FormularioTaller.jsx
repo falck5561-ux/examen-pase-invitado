@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import './PaseInvitado.css'; // Importamos el CSS actualizado
+import React, { useState, useMemo } from 'react';
+import './FormularioTaller.css'; // Importamos el CSS
 
 // Estado inicial del formulario
 const initialState = {
   nombre: '',
   correo: '',
-  tipoPase: '', // 'general' o 'vip'
+  tipoPase: '', // 'Estudiante' o 'Profesional'
   aceptoTerminos: false,
   comentarios: ''
 };
 
-function PaseInvitado() {
+function FormularioTaller() {
   // 1. ESTADO: Un solo objeto para todos los datos del formulario
   const [formData, setFormData] = useState(initialState);
   
@@ -30,6 +30,7 @@ function PaseInvitado() {
       [name]: inputValue
     });
 
+    // Limpia el error del campo específico si el usuario empieza a corregirlo
     if (errors[name]) {
       setErrors({
         ...errors,
@@ -38,7 +39,7 @@ function PaseInvitado() {
     }
   };
 
-  // 5. LÓGICA DE VALIDACIÓN
+  // 5. LÓGICA DE VALIDACIÓN (Función pura)
   const validateForm = () => {
     const newErrors = {};
     
@@ -47,11 +48,11 @@ function PaseInvitado() {
     }
     if (!formData.correo.trim()) {
       newErrors.correo = 'El correo es requerido.';
-    } else if (!formData.correo.includes('@')) {
-      newErrors.correo = 'El correo no es válido (debe incluir @).';
+    } else if (!formData.correo.includes('@') || !formData.correo.includes('.')) {
+      newErrors.correo = 'El correo no es válido (ej: usuario@dominio.com).';
     }
     if (!formData.tipoPase) {
-      newErrors.tipoPase = 'Debe seleccionar un tipo de pase.';
+      newErrors.tipoPase = 'Debe seleccionar un tipo de asistencia.';
     }
     if (!formData.aceptoTerminos) {
       newErrors.aceptoTerminos = 'Debe aceptar los términos y condiciones.';
@@ -64,6 +65,7 @@ function PaseInvitado() {
   // 6. MANEJADOR DE ENVÍO
   const handleSubmit = (e) => {
     e.preventDefault(); 
+    // Valida una última vez al intentar enviar
     if (!validateForm()) {
       return;
     }
@@ -78,12 +80,22 @@ function PaseInvitado() {
     setErrors({}); 
   };
 
+  // 8. MEJORA: Lógica para deshabilitar el botón
+  // Usamos useMemo para que no se recalcule en cada render, solo si formData cambia
+  const isFormInvalid = useMemo(() => {
+    return !formData.nombre.trim() || 
+           !formData.correo.includes('@') || 
+           !formData.tipoPase || 
+           !formData.aceptoTerminos;
+  }, [formData]);
+
+
   return (
     <div className="pase-container">
       
       {/* --- SECCIÓN DEL FORMULARIO --- */}
       <form className="form-card" onSubmit={handleSubmit} noValidate>
-        <h2>Pase de Invitado</h2>
+        <h2>Formulario de Registro</h2>
         
         {/* Campo Nombre */}
         <div className="form-group">
@@ -94,6 +106,7 @@ function PaseInvitado() {
             name="nombre"
             value={formData.nombre}
             onChange={handleChange}
+            placeholder="Ej: Ada Lovelace"
           />
           {errors.nombre && <span className="error-text">{errors.nombre}</span>}
         </div>
@@ -107,33 +120,34 @@ function PaseInvitado() {
             name="correo"
             value={formData.correo}
             onChange={handleChange}
+            placeholder="Ej: ada@correo.com"
           />
           {errors.correo && <span className="error-text">{errors.correo}</span>}
         </div>
 
-        {/* Campo Tipo de Pase (Radio) */}
+        {/* Campo Tipo de Pase (Radio) - REINTERPRETADO */}
         <div className="form-group">
-          <label>Tipo de Pase</label>
+          <label>Tipo de Asistencia</label>
           <div className="radio-group">
             <label>
               <input
                 type="radio"
                 name="tipoPase"
-                value="General"
-                checked={formData.tipoPase === 'General'}
+                value="Estudiante"
+                checked={formData.tipoPase === 'Estudiante'}
                 onChange={handleChange}
               />
-              General
+              Estudiante (con credencial)
             </label>
             <label>
               <input
                 type="radio"
                 name="tipoPase"
-                value="VIP"
-                checked={formData.tipoPase === 'VIP'}
+                value="Profesional"
+                checked={formData.tipoPase === 'Profesional'}
                 onChange={handleChange}
               />
-              VIP
+              Profesional / General
             </label>
           </div>
           {errors.tipoPase && <span className="error-text">{errors.tipoPase}</span>}
@@ -141,13 +155,14 @@ function PaseInvitado() {
 
         {/* Campo Comentarios (Opcional) */}
         <div className="form-group">
-          <label htmlFor="comentarios">Comentarios (Opcional)</label>
+          <label htmlFor="comentarios">Intereses (Opcional)</label>
           <textarea
             id="comentarios"
             name="comentarios"
             value={formData.comentarios}
             onChange={handleChange}
             maxLength={120} 
+            placeholder="¿Qué temas te gustaría ver en el taller?"
           />
           <small>{formData.comentarios.length} / 120</small>
         </div>
@@ -162,26 +177,26 @@ function PaseInvitado() {
               checked={formData.aceptoTerminos}
               onChange={handleChange}
             />
-            Acepto los términos y condiciones
+            Acepto los términos y condiciones del evento.
           </label>
           {errors.aceptoTerminos && <span className="error-text">{errors.aceptoTerminos}</span>}
         </div>
 
-        {/* Botón de Envío */}
-        <button type="submit" className="submit-btn">
-          Generar Pase
+        {/* Botón de Envío - MEJORA: Deshabilitado si es inválido */}
+        <button type="submit" className="submit-btn" disabled={isFormInvalid}>
+          {isFormInvalid ? 'Completa los campos requeridos' : 'Registrarme al Taller'}
         </button>
       </form>
 
       {/* --- SECCIÓN DERECHA (IMAGEN Y RESUMEN) --- */}
       <div className="summary-card">
         
-        {/* 1. La imagen que pediste */}
+        {/* 1. La imagen - MEJORA: Placeholder */}
         <div className="image-container">
           <img 
-            src="/bar.jpg" // Asegúrate que 'bar.jpg' esté en la carpeta 'public'
-            alt="Imagen de un bar" 
-            className="bar-image" 
+            src="https://placehold.co/600x300/3a3a3a/61dafb?text=Microtaller+UI/UX"
+            alt="Placeholder del taller de UI/UX" 
+            className="summary-image" 
           />
         </div>
 
@@ -195,7 +210,8 @@ function PaseInvitado() {
             <strong>Correo:</strong> {formData.correo || '...'}
           </p>
           <p>
-            <strong>Tipo de Pase:</strong> {formData.tipoPase || '...'}
+            {/* REINTERPRETADO */}
+            <strong>Asistencia:</strong> {formData.tipoPase || '...'}
           </p>
           <p>
             <strong>Términos:</strong> {formData.aceptoTerminos ? 'Aceptados' : 'Pendientes'}
@@ -209,14 +225,14 @@ function PaseInvitado() {
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>Envío exitoso (simulado — sin back-end)</h3>
-            <p>¡Tu pase ha sido generado!</p>
+            <p>¡Tu registro al taller ha sido confirmado!</p>
             
             <div className="modal-summary">
               <p><strong>Nombre:</strong> {formData.nombre}</p>
               <p><strong>Correo:</strong> {formData.correo}</p>
               <p><strong>Tipo:</strong> {formData.tipoPase}</p>
               {formData.comentarios && (
-                <p><strong>Comentarios:</strong> {formData.comentarios}</p>
+                <p><strong>Intereses:</strong> {formData.comentarios}</p>
               )}
             </div>
             
@@ -230,4 +246,4 @@ function PaseInvitado() {
   );
 }
 
-export default PaseInvitado;
+export default FormularioTaller;

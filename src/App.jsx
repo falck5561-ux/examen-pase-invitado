@@ -1,17 +1,16 @@
-// En tu proyecto (src/App.jsx)
 import React from 'react';
-import PaseInvitado from './components/PaseInvitado';
-import './App.css'; // Estilos globales si los tienes
+import FormularioTaller from './components/FormularioTaller';
+import './components/FormularioTaller.css'; // Importamos el CSS aquí
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Evento de Bienvenida</h1>
+        <h1>Microtaller de UI/UX</h1>
       </header>
       <main>
-        {/* Aquí renderizas tu componente de formulario */}
-        <PaseInvitado />
+        {/* Este es el componente principal de tu examen */}
+        <FormularioTaller />
       </main>
     </div>
   );
